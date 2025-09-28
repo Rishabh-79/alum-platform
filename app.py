@@ -4,7 +4,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 
-app = Flask(__name__)
+base_dir = os.path.abspath(os.path.dirname(__file__))
+instance_dir = os.path.join(base_dir, 'instance')
+
+app = Flask(__name__, instance_path=instance_dir)
 app.config['SECRET_KEY'] = 'mcc_alumni_secret_key_2024_enhanced'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mcc_alumni.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
