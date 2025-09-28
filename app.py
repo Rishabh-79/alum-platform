@@ -9,7 +9,7 @@ instance_dir = os.path.join(base_dir, 'instance')
 
 app = Flask(__name__, instance_path=instance_dir)
 app.config['SECRET_KEY'] = 'mcc_alumni_secret_key_2024_enhanced'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mcc_alumni.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://alumdb_user:8NmV4lDlf7XrBoYL66rpxYxllRjYIbdz@dpg-d3cfo7a4d50c73ch2v90-a/alumdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -308,7 +308,4 @@ def api_posts():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        print("Database tables created successfully!")
-        print("Starting MCC Alumni Association Platform...")
-        print("Open your browser to: http://localhost:5000")
     app.run(debug=True)
