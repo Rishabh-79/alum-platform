@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('my_posts') }}">My Posts</a>
+                    <a href="{{ url_for('profile') }}">Profile</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' if category == 'error' else 'info' }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Alumni Dashboard</h1>
+                    {% if session.user_name %}
+                        <p class="welcome-message">Welcome back, {{ session.user_name }}! ({{ session.user_type.title() }})</p>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('addpost') }}" class="btn btn-success">
+                    + Add New Post
+                </a>
+            </div>
+
+            {% if posts %}
+                <div class="posts-grid">
+                    {% for post in posts %}
+                        <div class="post-card fade-in">
+                            <h3>
+                                <a href="{{ url_for('viewpost', post_id=post.id) }}" class="post-title">{{ post.title }}</a>
+                            </h3>
+                            <div class="post-meta">
+                                By {{ post.author_name }} • {{ post.date_created.strftime('%B %d, %Y at %I:%M %p') }}
+                                {% if post.comment_count > 0 %}
+                                    • {{ post.comment_count }} comment{{ 's' if post.comment_count != 1 else '' }}
+                                {% endif %}
+                            </div>
+                            <div class="post-description">
+                                {{ post.description[:200] }}{% if post.description|length > 200 %}...{% endif %}
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <a href="{{ url_for('viewpost', post_id=post.id) }}" class="btn btn-secondary btn-sm">
+                                    Read More
+                                </a>
+                                {% if post.user_id == session.user_id %}
+                                    <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-primary btn-sm" style="background-color: #ffc107; color: #212529;">
+                                        Edit
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No Posts Yet</h3>
+                    <p>Be the first to share something with the MCC community!</p>
+                    <a href="{{ url_for('addpost') }}" class="btn btn-primary">Create First Post</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+</body>
+</html>

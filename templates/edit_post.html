@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('my_posts') }}">My Posts</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' if category == 'error' else 'info' }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div style="margin-bottom: 20px;">
+                <a href="{{ url_for('viewpost', post_id=post.id) }}" class="btn btn-secondary btn-sm">← Back to Post</a>
+            </div>
+
+            <div class="form-container fade-in" style="max-width: 800px;">
+                <h2 class="form-title">Edit Your Post</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="title">Post Title</label>
+                        <input type="text" id="title" name="title" class="form-control" 
+                               value="{{ post.title }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Post Content</label>
+                        <textarea id="description" name="description" class="form-control" 
+                                  rows="12" required>{{ post.description }}</textarea>
+                    </div>
+                    <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                        <a href="{{ url_for('viewpost', post_id=post.id) }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">Update Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+
+    <style>
+        textarea.form-control {
+            resize: vertical;
+            min-height: 250px;
+            font-family: inherit;
+        }
+    </style>
+</body>
+</html>

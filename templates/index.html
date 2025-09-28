@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCC Alumni Association Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni Platform
+                </a>
+                <div class="nav-links">
+                    {% if session.user_id %}
+                        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                        <a href="{{ url_for('my_posts') }}">My Posts</a>
+                        <a href="{{ url_for('profile') }}">Profile</a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('signin') }}">Sign In</a>
+                        <a href="{{ url_for('signup') }}">Sign Up</a>
+                        <a href="{{ url_for('dashboard') }}" class="btn-primary">Dashboard</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero fade-in">
+                <h1>Welcome to MCC Alumni Association</h1>
+                <p>Connecting past, present, and future generations of Madras Christian College. Join our vibrant community of alumni and current students to share experiences, opportunities, and memories.</p>
+                {% if not session.user_id %}
+                    <div style="margin-top: 30px;">
+                        <a href="{{ url_for('signup') }}" class="btn btn-primary" style="margin-right: 15px;">Join Now</a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">View Posts</a>
+                    </div>
+                {% else %}
+                    <div style="margin-top: 30px;">
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">Welcome back, <strong>{{ session.user_name }}</strong>!</p>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="margin-right: 15px;">Go to Dashboard</a>
+                        <a href="{{ url_for('addpost') }}" class="btn btn-success">Create New Post</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Community Statistics -->
+            {% if stats %}
+            <div style="background: white; border-radius: 10px; padding: 30px; margin: 40px 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+                <h2 style="text-align: center; color: #dc3545; margin-bottom: 30px;">Community Statistics</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #dc3545;">
+                        <h3 style="color: #dc3545; margin: 0; font-size: 2rem;">{{ stats.users }}</h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d;">Community Members</p>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #28a745;">
+                        <h3 style="color: #28a745; margin: 0; font-size: 2rem;">{{ stats.posts }}</h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d;">Posts Shared</p>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #ffc107;">
+                        <h3 style="color: #e67e22; margin: 0; font-size: 2rem;">{{ stats.comments }}</h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d;">Comments Made</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Recent Posts Preview -->
+            {% if recent_posts %}
+            <div style="margin: 60px 0;">
+                <h2 style="text-align: center; color: #dc3545; margin-bottom: 30px;">Recent Community Posts</h2>
+                <div class="posts-grid">
+                    {% for post in recent_posts %}
+                        <div class="post-card fade-in">
+                            <h3>
+                                <a href="{{ url_for('viewpost', post_id=post.id) }}" class="post-title">{{ post.title }}</a>
+                            </h3>
+                            <div class="post-meta">
+                                By {{ post.author_name }} • {{ post.date_created.strftime('%B %d, %Y') }}
+                            </div>
+                            <div class="post-description">
+                                {{ post.description[:150] }}{% if post.description|length > 150 %}...{% endif %}
+                            </div>
+                            <a href="{{ url_for('viewpost', post_id=post.id) }}" class="btn btn-secondary btn-sm">
+                                Read More
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View All Posts</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Feature Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 60px;">
+                <div class="post-card">
+                    <h3 style="color: #dc3545; margin-bottom: 15px;">Connect & Network</h3>
+                    <p>Build meaningful connections with fellow alumni and current students. Share your professional journey and discover new opportunities within the MCC community.</p>
+                </div>
+                <div class="post-card">
+                    <h3 style="color: #dc3545; margin-bottom: 15px;">Share Experiences</h3>
+                    <p>Post about your achievements, career milestones, and cherished memories from your time at MCC. Inspire and guide the next generation of students.</p>
+                </div>
+                <div class="post-card">
+                    <h3 style="color: #dc3545; margin-bottom: 15px;">Stay Updated</h3>
+                    <p>Keep up with the latest news, events, and developments at Madras Christian College. Never miss important updates from your alma mater.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association. </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('signin') }}">Sign In</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="alert alert-info">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-container fade-in">
+                <h2 class="form-title">Join MCC Alumni Community</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_type">I am a</label>
+                        <select id="user_type" name="user_type" class="form-control" required>
+                            <option value="">Select your status</option>
+                            <option value="student">Current Student</option>
+                            <option value="alumni">Alumni</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                <p style="text-align: center; margin-top: 20px; color: #6c757d;">
+                    Already have an account? <a href="{{ url_for('signin') }}" style="color: #dc3545; text-decoration: none;">Sign In</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+</body>
+</html>

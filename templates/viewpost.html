@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('my_posts') }}">My Posts</a>
+                    <a href="{{ url_for('profile') }}">Profile</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' if category == 'error' else 'info' }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-sm">← Back to Dashboard</a>
+
+                {% if post.user_id == session.user_id %}
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-sm" style="background-color: #ffc107; color: #212529;">
+                            Edit Post
+                        </a>
+                        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" style="display: inline;" 
+                              onsubmit="return confirm('Are you sure you want to delete this post? This action cannot be undone.')">
+                            <button type="submit" class="btn btn-sm" style="background-color: #dc3545; color: white;">Delete Post</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+
+            <article class="post-content fade-in">
+                <h1 class="post-full-title">{{ post.title }}</h1>
+                <div class="post-full-meta">
+                    By <strong>{{ post.author_name }}</strong> • {{ post.date_created.strftime('%B %d, %Y at %I:%M %p') }}
+                    {% if post.date_updated != post.date_created %}
+                        • <em>Updated {{ post.date_updated.strftime('%B %d, %Y') }}</em>
+                    {% endif %}
+                </div>
+                <div class="post-full-description">
+                    {{ post.description | replace('\n', '<br>') | safe }}
+                </div>
+            </article>
+
+            <section class="comments-section">
+                <h2 class="comments-title">Comments ({{ comments|length }})</h2>
+
+                <form method="POST" class="comment-form">
+                    <div class="form-group">
+                        <label for="content">Add your comment as <strong>{{ session.user_name }}</strong></label>
+                        <textarea id="content" name="content" class="form-control" rows="4" 
+                                  placeholder="Share your thoughts about this post..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+
+                {% if comments %}
+                    <div class="comments-list">
+                        {% for comment in comments %}
+                            <div class="comment">
+                                <div class="comment-author">{{ comment.author_name }}</div>
+                                <div class="comment-date">{{ comment.date_created.strftime('%B %d, %Y at %I:%M %p') }}</div>
+                                <div class="comment-content">{{ comment.content | replace('\n', '<br>') | safe }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state" style="padding: 40px 0;">
+                        <h3>No comments yet</h3>
+                        <p>Be the first to share your thoughts about this post!</p>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+
+    <style>
+        .comments-list {
+            margin-top: 30px;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+    </style>
+</body>
+</html>

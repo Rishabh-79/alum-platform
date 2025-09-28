@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-container fade-in" style="max-width: 800px;">
+                <h2 class="form-title">Share with MCC Community</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="title">Post Title</label>
+                        <input type="text" id="title" name="title" class="form-control" 
+                               placeholder="Enter a compelling title for your post" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Post Content</label>
+                        <textarea id="description" name="description" class="form-control" 
+                                  rows="10" placeholder="Share your thoughts, experiences, opportunities, or news with the MCC community..." required></textarea>
+                    </div>
+                    <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">Publish Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+
+    <style>
+        textarea.form-control {
+            resize: vertical;
+            min-height: 200px;
+            font-family: inherit;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('my_posts') }}">My Posts</a>
+                    <a href="{{ url_for('profile') }}">Profile</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="form-container fade-in" style="max-width: 600px;">
+                <h2 class="form-title">Your Profile</h2>
+
+                <div class="profile-info" style="text-align: left;">
+                    <div class="form-group">
+                        <label><strong>Name:</strong></label>
+                        <p style="margin: 5px 0 20px 0; font-size: 1.1rem;">{{ user.name }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Email:</strong></label>
+                        <p style="margin: 5px 0 20px 0; font-size: 1.1rem;">{{ user.email }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Status:</strong></label>
+                        <p style="margin: 5px 0 20px 0; font-size: 1.1rem;">{{ user.user_type.title() }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Member Since:</strong></label>
+                        <p style="margin: 5px 0 20px 0; font-size: 1.1rem;">{{ user.date_created.strftime('%B %d, %Y') }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Last Login:</strong></label>
+                        <p style="margin: 5px 0 20px 0; font-size: 1.1rem;">{{ user.last_login.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 30px 0;">
+                    <div class="stat-card" style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid #dc3545;">
+                        <h3 style="color: #dc3545; margin: 0; font-size: 2rem;">{{ post_count }}</h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d;">Posts Created</p>
+                    </div>
+                    <div class="stat-card" style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid #28a745;">
+                        <h3 style="color: #28a745; margin: 0; font-size: 2rem;">{{ comment_count }}</h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d;">Comments Made</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="{{ url_for('my_posts') }}" class="btn btn-primary" style="margin-right: 15px;">View My Posts</a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+</body>
+</html>

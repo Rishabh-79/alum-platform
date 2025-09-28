@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - MCC Alumni Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-img"></div>
+                    MCC Alumni
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="empty-state" style="padding: 100px 20px;">
+                <h1 style="color: #dc3545; font-size: 6rem; margin: 0;">404</h1>
+                <h2 style="color: #333; margin: 20px 0;">Page Not Found</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                    The page you're looking for doesn't exist or has been moved.
+                </p>
+                <div>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-right: 15px;">
+                        Go Home
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                        View Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Madras Christian College Alumni Association</p>
+        </div>
+    </footer>
+</body>
+</html>
